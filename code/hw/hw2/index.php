@@ -54,12 +54,13 @@
 
         function div($arg1, $arg2)
         {
-            $error = 'На ноль делить нельзя!';
-            if ($arg2 == 0) {
-                echo $error;
-            } else {
-                return $arg1 / $arg2;
-            }
+            // $error = 'На ноль делить нельзя!';
+            // if ($arg2 == 0) {
+            //     echo $error;
+            // } else {
+            //     return $arg1 / $arg2;
+            // }
+            return ($arg2 != 0) ? $arg1 / $arg2 : "Деление на 0";
         }
         ?>
         <details>
@@ -82,12 +83,7 @@
 
             function div($arg1, $arg2)
             {
-                $error = 'На ноль делить нельзя!';
-                if ($arg2 == 0) {
-                    echo $error;
-                } else {
-                    return $arg1 / $arg2;
-                }
+                return ($arg2 != 0) ? $arg1 / $arg2 : "Деление на 0";
             }
             </pre>
         </details>

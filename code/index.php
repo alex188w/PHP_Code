@@ -29,7 +29,8 @@
             <a href="seminar/seminar1/index1-3.php">Задача 3</a>
             </pre>
         </details>
-        <li><a href="hw/hw2/index.php">Семинар 2. Условия, Массивы, циклы, функции</a></li>
+        <li><a href="seminar/seminar2/index.php">Семинар 2. Условия, Массивы, циклы, функции</a></li>
+        <li><a href="seminar/seminar3/index.php">Семинар 3. Файлы, подключение кода, Composer</a></li>
     </ul>
     <h2>Практические задания</h2>
     <ul>
