@@ -15,7 +15,7 @@ $dBook1 = new DigitalBook('Электронная книга 6', 'Автор 6',
 $dBook2 = new DigitalBook('Электронная книга 7', 'Автор 7', 2007, 'http://www.digital-book.com/book2.pdf', 7);
 
 // Создаем Объект Shelf внутри Объекта Room в качестве параметра (композиция)
-$room1 = new Room(1, 'улица 1 г. Екатеринбург', $shelf1 = new Shelf(1, 1, [$pBook1, $pBook2, $pBook3, $pBook4, $pBook5])); 
+$room1 = new Room(1, 'улица 1 г. Екатеринбург', new Shelf(1, 1, [$pBook1, $pBook2, $pBook3, $pBook4, $pBook5])); 
 
 echo $room1;
 
