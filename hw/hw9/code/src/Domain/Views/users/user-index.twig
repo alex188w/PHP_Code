@@ -1,0 +1,122 @@
+{% if isAdmin %}
+  <button class="add">
+    <a class="add-link" href="/user/edit">Добавить пользователя</a>
+{% endif %}
+</button>
+<p>Список пользователей в хранилище</p>
+<div class="table-responsive small">
+	<table class="table table-striped table-sm">
+		<thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Имя</th>
+				<th scope="col">Фамилия</th>
+				<th scope="col">День рождения</th>
+        {% if isAdmin %}
+          <th scope="col">Редактировать</th>
+          <th scope="col">Удалить</th>
+          <th scope="col">Права</th>
+        {% endif %}
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+				<tr id="{{ user.getUserId() }}">        
+					<td>{{ user.getUserId() }}</td>
+					<td>{{ user.getUserName() }}</td>
+					<td>{{ user.getUserLastName() }}</td>
+					<td>
+						{% if user.getUserBirthday() is not empty %}
+							{{ user.getUserBirthday() | date('d.m.Y') }}
+						{% else %}
+							<b>Не задан</b>
+						{% endif %}
+          </td>
+          {% if isAdmin %}
+            <td>
+              <button class='user-update'>
+                <a class="user-link" href="/user/edit/?user_id={{ user.userId }}">Редактировать</a>
+              </button>
+            </td>
+            <td>
+              <button class='user-del' id='{{ user.getUserId() }}'>
+                <a class="user-link">Удалить</a>
+              </button>
+              {# href="/user/delete/?user_id={{ user.userId }}" #}
+            </td>
+            <td>{{ user.getUserRank() }}</td>
+            {% endif %}          
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+
+<script>
+// Скрипт для удаления пользователя в асинхронном режиме из таблицы и из БД.
+  const delButtonElements = document.querySelectorAll('.user-del');
+  
+    for (const delButtonElement of delButtonElements) {
+      // console.log(delButtonElement.id);
+        delButtonElement.addEventListener('click', () => {
+            const id = delButtonElement.id;
+            $.ajax({
+                method: 'POST',
+                url: '/user/delete/',
+                data: {deletionUserId: id}
+                
+            }).done(function (response) {
+                const status = $.parseJSON(response)['status'];  
+                // console.log(status);
+                if (status == 'ok') {
+                    const row = document.getElementById(id);
+                    row.parentNode.removeChild(row);
+                }
+            });
+        });
+        console.log(status);
+    }
+// Скрипт для обновления таблицы пользователей через файл json каждые 10 с.
+    let maxId = $('.table-responsive tbody tr:last-child td:first-child').html();
+        
+    setInterval(function () {     
+      
+      $.ajax({
+          method: 'POST',
+          url: '/user/indexRefresh/',
+          data: { maxId: maxId },
+      }).done(function (response) {        
+
+          let users = $.parseJSON(response);		  
+          
+          if(users.length != 0){
+            for(var k in users){
+
+              let row = "<tr>";
+
+              row += "<td>" + users[k].id + "</td>";
+              maxId = users[k].id;
+
+              row += "<td>" + users[k].username + "</td>";
+              row += "<td>" + users[k].userlastname + "</td>";
+              row += "<td>" + users[k].userbirthday + "</td>";          
+              row += `<td>
+                <button class="user-update">
+                  <a class="user-link" href="/user/edit/?user_id={{ user.userId }}">Редактировать</a>
+                </button>
+              </td>`;
+              row += `<td>
+                <button class="user-del">
+                  <a class="user-link" href="/user/delete/?user_id={{ user.userId }}">Удалить</a>
+                </button>
+              </td>`;
+              row += "<td>" + users[k].userRank + "</td>";
+
+              row += "</tr>";
+              $('.content-template tbody').append(row);
+            }            
+          }          
+      });
+    }, 10000);
+</script>
