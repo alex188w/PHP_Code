@@ -10,3 +10,6 @@
 
 
 ![img5](./code/public/img/5.JPG)
+
+
+![img6](./code/public/img/6.JPG)
